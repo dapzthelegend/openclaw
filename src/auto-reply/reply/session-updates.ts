@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { resolveSessionAgentId } from "../../agents/agent-scope.js";
 import { buildWorkspaceSkillSnapshot } from "../../agents/skills.js";
 import { matchesSkillFilter } from "../../agents/skills/filter.js";
 import {
@@ -82,7 +83,7 @@ export async function ensureSkillSnapshot(params: {
   let systemSent = sessionEntry?.systemSent ?? false;
   const remoteEligibility = getRemoteSkillEligibility();
   const snapshotVersion = getSkillsSnapshotVersion(workspaceDir);
-  const sessionAgentId = resolveAgentIdFromSessionKey(sessionKey);
+  const sessionAgentId = resolveSessionAgentId({ sessionKey, config: cfg });
   const existingSnapshot = nextEntry?.skillsSnapshot;
   ensureSkillsWatcher({ workspaceDir, config: cfg });
   const shouldRefreshSnapshot =
